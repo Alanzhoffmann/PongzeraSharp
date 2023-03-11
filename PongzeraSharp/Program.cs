@@ -1,18 +1,6 @@
-﻿// See https://aka.ms/new-console-template for more information
-using Raylib_cs;
+﻿using PongzeraSharp;
 
-Console.WriteLine("Hello, World!");
+var logic = new TestLogic();
 
-Raylib.InitWindow(800, 600, "Test");
-
-while (!Raylib.WindowShouldClose())
-{
-    Raylib.BeginDrawing();
-    Raylib.ClearBackground(Color.RAYWHITE);
-
-    Raylib.DrawText("Hello C# Window", 10, 10, 20, Color.BLACK);
-
-    Raylib.EndDrawing();
-}
-
-Raylib.CloseWindow();
+var window = new GameWindow(logic);
+window.InitMainLoop();

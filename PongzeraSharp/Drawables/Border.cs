@@ -4,7 +4,7 @@ namespace PongzeraSharp.Drawables
 {
     public class Border : IDrawable
     {
-        private Rectangle _border;
+        public Rectangle Edges { get; private set; }
 
         public void Init()
         {
@@ -13,12 +13,12 @@ namespace PongzeraSharp.Drawables
 
             const int margin = 10;
 
-            _border = new Rectangle(margin, margin, windowWidth - margin * 2, windowHeight - margin * 2);
+            Edges = new Rectangle(margin, margin, windowWidth - margin * 2, windowHeight - margin * 2);
         }
 
         public void Draw()
         {
-            Raylib.DrawRectangleLinesEx(_border, 1, Color.BLACK);
+            Raylib.DrawRectangleLinesEx(Edges, 1, Color.BLACK);
         }
 
         public void Update(float deltaTime)

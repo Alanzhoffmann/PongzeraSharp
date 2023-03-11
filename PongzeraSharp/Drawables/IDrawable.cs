@@ -1,4 +1,4 @@
-﻿namespace PongzeraSharp
+﻿namespace PongzeraSharp.Drawables
 {
     public interface IDrawable
     {

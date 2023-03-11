@@ -1,4 +1,5 @@
-﻿using Raylib_cs;
+﻿using PongzeraSharp.Drawables;
+using Raylib_cs;
 
 namespace PongzeraSharp
 {
@@ -15,7 +16,7 @@ namespace PongzeraSharp
         public int Height { get; }
         public IDrawable Logic { get; }
 
-        public void InitMainLoop()
+        public void RunMainLoop()
         {
             Raylib.InitWindow(800, 600, "Test");
 

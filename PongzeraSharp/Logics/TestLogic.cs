@@ -5,9 +5,13 @@ namespace PongzeraSharp.Logics
 {
     public sealed class TestLogic : BaseLogic
     {
-        readonly Border _border = new();
+        private readonly Border _border = new();
 
-        public override IEnumerable<IDrawable> GetGameObjects()
+        public TestLogic(GameWindow window) : base(window)
+        {
+        }
+
+        public override IEnumerable<IDrawable> GetDrawables()
         {
             yield return _border;
             yield return new MovingDot();
@@ -20,11 +24,11 @@ namespace PongzeraSharp.Logics
 
             if (Raylib.IsKeyPressed(KeyboardKey.KEY_A))
             {
-                Console.WriteLine("Add new Bouncing dot!");
-
                 var ball = new BouncingDot(_border.Edges);
+
+                Console.WriteLine($"Add new Bouncing dot! {ball}");
                 ball.Init();
-                GameObjects.Add(ball);
+                Drawables.Add(ball);
             }
         }
     }

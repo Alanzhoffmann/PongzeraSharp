@@ -13,18 +13,7 @@ namespace PongzeraSharp.Drawables
         public BouncingDot(Rectangle limits)
         {
             _limits = limits;
-        }
 
-        private bool MovingLeft => _speedHorizontal < 0;
-        private bool MovingUp => _speedVertical < 0;
-
-        public void Draw()
-        {
-            Raylib.DrawRectangleRec(_dot, Color.BLACK);
-        }
-
-        public void Init()
-        {
             const float dotSize = 10;
 
             var positionHorizontal = _limits.GetCenterHorizontal() + (dotSize / 2);
@@ -32,8 +21,8 @@ namespace PongzeraSharp.Drawables
 
             _dot = new Rectangle(positionHorizontal, positionVertical, dotSize, dotSize);
 
-            _speedHorizontal = Random.Shared.NextSingle() * 150;
-            _speedVertical = Random.Shared.NextSingle() * 150;
+            _speedHorizontal = Random.Shared.NextSingle() * 300;
+            _speedVertical = Random.Shared.NextSingle() * 300;
 
             var randomUp = Random.Shared.Next(2) > 0;
             var randomRight = Random.Shared.Next(2) > 0;
@@ -49,6 +38,18 @@ namespace PongzeraSharp.Drawables
             }
         }
 
+        private bool MovingLeft => _speedHorizontal < 0;
+        private bool MovingUp => _speedVertical < 0;
+
+        public void Draw()
+        {
+            Raylib.DrawRectangleRec(_dot, Color.BLACK);
+        }
+
+        public void Init()
+        {
+        }
+
         public void Update(float deltaTime)
         {
             CalculateNewPosition(deltaTime);
@@ -62,6 +63,11 @@ namespace PongzeraSharp.Drawables
             {
                 InvertHorizontalDirection();
             }
+        }
+
+        public override string ToString()
+        {
+            return $"Hor speed: {_speedHorizontal}, Ver speed: {_speedVertical}";
         }
 
         private bool CheckHitLeft() => MovingLeft && _limits.GetBoundaryLeft() > _dot.GetBoundaryLeft();

@@ -13,13 +13,19 @@ namespace PongzeraSharp
 
         public int Width { get; }
         public int Height { get; }
-        public string Title { get; }
+        public string Title { get; private set; }
 
         public void Init()
         {
             Raylib.InitWindow(Width, Height, Title);
 
             SetFPSToRefreshRate();
+        }
+
+        public void SetWindowTitle(string title)
+        {
+            Title = title;
+            Raylib.SetWindowTitle(title);
         }
 
         private static void SetFPSToRefreshRate()

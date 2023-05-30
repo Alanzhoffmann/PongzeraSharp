@@ -13,15 +13,13 @@ namespace PongzeraSharp.Logics
             Window = window;
         }
 
-        public GameWindow Window { get; }
+        protected GameWindow Window { get; }
 
         public abstract IEnumerable<IDrawable> GetDrawables();
 
         public virtual void Init()
         {
-            Raylib.InitWindow(Window.Width, Window.Height, "Test");
-
-            SetFPSToRefreshRate();
+            Window.Init();
 
             if (!Drawables.IsEmpty)
                 Drawables.Clear();
@@ -66,13 +64,6 @@ namespace PongzeraSharp.Logics
             }
 
             Raylib.CloseWindow();
-        }
-
-        private static void SetFPSToRefreshRate()
-        {
-            var currentMonitor = Raylib.GetCurrentMonitor();
-            var refreshRate = Raylib.GetMonitorRefreshRate(currentMonitor);
-            Raylib.SetTargetFPS(refreshRate);
         }
     }
 }

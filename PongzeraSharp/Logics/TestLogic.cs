@@ -5,7 +5,7 @@ namespace PongzeraSharp.Logics
 {
     public sealed class TestLogic : BaseLogic
     {
-        private readonly Border _border = new();
+        private readonly Border _border;
 
         private readonly TimeSpan _timeToNewBall = TimeSpan.FromMilliseconds(300);
         private TimeSpan _elapsedTime = TimeSpan.Zero;
@@ -13,12 +13,14 @@ namespace PongzeraSharp.Logics
 
         public TestLogic(GameWindow window) : base(window)
         {
+            _border = new(window);
         }
 
-        public override IEnumerable<IDrawable> GetDrawables()
+        public override void Init()
         {
-            yield return _border;
-            //yield return new MovingDot();
+            base.Init();
+
+            AddGameObject(_border);
         }
 
         public override void Update(float deltaTime)
@@ -39,8 +41,7 @@ namespace PongzeraSharp.Logics
                 var ball = new BouncingDot(_border.Edges);
 
                 Console.WriteLine($"Add new Bouncing dot! {ball}");
-                ball.Init();
-                Drawables.Add(ball);
+                AddGameObject(ball);
 
                 _currentBallCount++;
                 Window.SetWindowTitle($"Current count: {_currentBallCount}");

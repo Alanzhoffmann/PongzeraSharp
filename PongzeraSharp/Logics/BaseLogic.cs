@@ -1,46 +1,49 @@
 ﻿using System.Collections.Concurrent;
-using PongzeraSharp.Drawables;
+using PongzeraSharp.Interfaces;
 using Raylib_cs;
 
 namespace PongzeraSharp.Logics
 {
-    public abstract class BaseLogic : IDrawable
+    public abstract class BaseLogic : IDraw, ILogic
     {
-        protected readonly ConcurrentBag<IDrawable> Drawables = new();
+        private readonly ConcurrentBag<object> GameObjects = new();
 
         public BaseLogic(GameWindow window)
         {
             Window = window;
         }
 
-        protected GameWindow Window { get; }
+        protected IEnumerable<IDraw> Drawables => GameObjects.OfType<IDraw>();
+        protected IEnumerable<ILogic> Logics => GameObjects.OfType<ILogic>();
 
-        public abstract IEnumerable<IDrawable> GetDrawables();
+        protected GameWindow Window { get; }
 
         public virtual void Init()
         {
             Window.Init();
 
-            if (!Drawables.IsEmpty)
-                Drawables.Clear();
-
-            foreach (var drawable in GetDrawables())
-            {
-                drawable.Init();
-                Drawables.Add(drawable);
-            }
+            if (!GameObjects.IsEmpty)
+                GameObjects.Clear();
         }
 
         public virtual void Draw()
         {
+            Raylib.BeginDrawing();
+
+            Raylib.ClearBackground(Color.RAYWHITE);
+
+            //Raylib.DrawText("Hello C# Window", 10, 10, 20, Color.BLACK);
+
             foreach (var drawable in Drawables)
                 drawable.Draw();
+
+            Raylib.EndDrawing();
         }
 
         public virtual void Update(float deltaTime)
         {
-            foreach (var drawable in Drawables)
-                drawable.Update(deltaTime);
+            foreach (var logic in Logics)
+                logic.Update(deltaTime);
         }
 
         public void RunMainLoop()
@@ -50,20 +53,39 @@ namespace PongzeraSharp.Logics
             while (!Raylib.WindowShouldClose())
             {
                 var deltaTime = Raylib.GetFrameTime();
+
                 Update(deltaTime);
 
-                Raylib.BeginDrawing();
-
-                Raylib.ClearBackground(Color.RAYWHITE);
-
-                //Raylib.DrawText("Hello C# Window", 10, 10, 20, Color.BLACK);
-
                 Draw();
-
-                Raylib.EndDrawing();
             }
 
             Raylib.CloseWindow();
+        }
+
+        protected void AddGameObject(object gameObject)
+        {
+            bool validGameObject = false;
+
+            if (gameObject is IInitialize initialize)
+            {
+                initialize.Init();
+                validGameObject = true;
+            }
+
+            if (gameObject is IDraw || gameObject is ILogic)
+            {
+                validGameObject = true;
+            }
+
+            if (!validGameObject)
+            {
+                throw new InvalidOperationException("This game object is not valid!");
+            }
+
+            lock (GameObjects)
+            {
+                GameObjects.Add(gameObject);
+            }
         }
     }
 }

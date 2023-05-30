@@ -1,8 +1,9 @@
-﻿using Raylib_cs;
+﻿using PongzeraSharp.Interfaces;
+using Raylib_cs;
 
 namespace PongzeraSharp.Drawables
 {
-    public class BouncingDot : IDrawable
+    public class BouncingDot : IDraw, ILogic
     {
         private readonly Rectangle _limits;
         private Rectangle _dot;
@@ -44,10 +45,6 @@ namespace PongzeraSharp.Drawables
         public void Draw()
         {
             Raylib.DrawRectangleRec(_dot, Color.BLACK);
-        }
-
-        public void Init()
-        {
         }
 
         public void Update(float deltaTime)

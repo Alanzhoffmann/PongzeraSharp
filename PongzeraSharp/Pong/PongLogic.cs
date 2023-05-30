@@ -9,10 +9,12 @@ namespace PongzeraSharp.Pong
         {
         }
 
-        public override IEnumerable<IDrawable> GetDrawables()
+        public override void Init()
         {
-            yield return new Border();
-            yield return new MovingDot();
+            base.Init();
+
+            AddGameObject(new Border(Window));
+            AddGameObject(new MovingDot());
         }
     }
 }

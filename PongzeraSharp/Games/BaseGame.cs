@@ -2,18 +2,18 @@
 using PongzeraSharp.Interfaces;
 using Raylib_cs;
 
-namespace PongzeraSharp.Logics
+namespace PongzeraSharp.Games
 {
-    public abstract class BaseLogic : IDraw, ILogic
+    public abstract class BaseGame : IDraw, ILogic
     {
         private readonly ConcurrentBag<object> GameObjects = new();
 
-        public BaseLogic(GameWindow window)
+        public BaseGame(GameWindow window)
         {
             Window = window;
         }
 
-        protected IEnumerable<IDraw> Drawables => GameObjects.OfType<IDraw>();
+        protected IEnumerable<IDraw> Draws => GameObjects.OfType<IDraw>();
         protected IEnumerable<ILogic> Logics => GameObjects.OfType<ILogic>();
 
         protected GameWindow Window { get; }
@@ -34,8 +34,8 @@ namespace PongzeraSharp.Logics
 
             //Raylib.DrawText("Hello C# Window", 10, 10, 20, Color.BLACK);
 
-            foreach (var drawable in Drawables)
-                drawable.Draw();
+            foreach (var draw in Draws)
+                draw.Draw();
 
             Raylib.EndDrawing();
         }
@@ -64,7 +64,7 @@ namespace PongzeraSharp.Logics
 
         protected void AddGameObject(object gameObject)
         {
-            bool validGameObject = false;
+            var validGameObject = false;
 
             if (gameObject is IInitialize initialize)
             {

@@ -1,11 +1,10 @@
 ﻿using PongzeraSharp.Drawables;
-using PongzeraSharp.Logics;
 
-namespace PongzeraSharp.Pong
+namespace PongzeraSharp.Games.Pong
 {
-    public class PongLogic : BaseLogic
+    public class PongGame : BaseGame
     {
-        public PongLogic(GameWindow window) : base(window)
+        public PongGame(GameWindow window) : base(window)
         {
         }
 
